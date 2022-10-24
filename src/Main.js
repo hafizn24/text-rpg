@@ -17,7 +17,8 @@ function Main() {
 
     let config = {
         method: 'post',
-        url: '/findOne',
+        url: 'https://data.mongodb-api.com/app/data-ncfnu/endpoint/data/v1/action/findOne',
+        // package.json "proxy": "https://data.mongodb-api.com/app/data-ncfnu/endpoint/data/v1/action",
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': '*',

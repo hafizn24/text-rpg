@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 function Main() {
     // Variable for fetched data
     const [base, setBase] = useState('')
+    const [name, setName] = useState('')
 
     // Credential for SupaBase
     const supabaseUrl = 'https://dtldrjiosqxvojqqeflm.supabase.co'
@@ -21,6 +22,7 @@ function Main() {
                 .eq('char_id', '1')
 
                 setBase(result)
+                setName(result[0].name)
             }
             catch(error){
               console.log(error)
@@ -28,8 +30,7 @@ function Main() {
         }
         fetchData()
     },[])
-
-    let info = base
+    
     return (
         <>
             <Typography
@@ -42,7 +43,7 @@ function Main() {
                 align='center'
                 variant='body1'
             >
-                {info[0].name}
+                {name}
             </Typography>
         </>
     )

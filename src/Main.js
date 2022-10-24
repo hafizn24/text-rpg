@@ -3,21 +3,24 @@ import { Typography } from '@mui/material/'
 import { createClient } from '@supabase/supabase-js'
 
 function Main() {
-    const [supbase, setSupbase] = useState('')
+    // Variable for fetched data
+    const [base, setBase] = useState('')
 
+    // Credential for SupaBase
     const supabaseUrl = 'https://dtldrjiosqxvojqqeflm.supabase.co'
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0bGRyamlvc3F4dm9qcXFlZmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjY1ODcxNDMsImV4cCI6MTk4MjE2MzE0M30.fP0x4sUpSx3MsQsfdOi8BSR6L7RMS0wWDI64JDtUvgI'
     
+    // Async for Fetch Data
     const supabase = createClient(supabaseUrl, supabaseKey)
     useEffect(() =>{
         const fetchData = async() =>{
             try{
-                let { data: result, error } = await supabase
+                let { data: result } = await supabase
                 .from('character')
                 .select('*')
                 .eq('char_id', '1')
 
-                setSupbase(result)
+                setBase(result)
             }
             catch(error){
               console.log(error)
@@ -26,6 +29,7 @@ function Main() {
         fetchData()
     },[])
 
+    let info = base
     return (
         <>
             <Typography
@@ -34,7 +38,12 @@ function Main() {
             >
                 Text-RPG!
             </Typography>
-            {console.log(supbase)}
+            <Typography
+                align='center'
+                variant='body1'
+            >
+                {info[0].name}
+            </Typography>
         </>
     )
 }

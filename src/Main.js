@@ -1,42 +1,31 @@
 import { useEffect, useState } from 'react'
 import { Typography } from '@mui/material/'
-import Axios from 'axios'
+import { createClient } from '@supabase/supabase-js'
 
 function Main() {
-    const [mongo, setMongo] = useState('')
-    let id = parseInt(1)
+    const [supbase, setSupbase] = useState('')
 
-    let data = JSON.stringify({
-        "collection": "character",
-        "database": "hafiz-db",
-        "dataSource": "Cluster0",
-        "filter": {
-            "id": id
-        }
-    })
-
-    let config = {
-        method: 'post',
-        url: 'https://data.mongodb-api.com/app/data-ncfnu/endpoint/data/v1/action/findOne',
-        // package.json "proxy": "https://data.mongodb-api.com/app/data-ncfnu/endpoint/data/v1/action",
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Request-Headers': '*',
-          'api-key': 'h2j4wkjpoEPuVndrEuMHnVVAukwAH5ySDgI80DeD8Ig5SNEKm0cRkXuCvBjSOCNS',
-        },
-        data: data
-    };
+    const supabaseUrl = 'https://dtldrjiosqxvojqqeflm.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0bGRyamlvc3F4dm9qcXFlZmxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjY1ODcxNDMsImV4cCI6MTk4MjE2MzE0M30.fP0x4sUpSx3MsQsfdOi8BSR6L7RMS0wWDI64JDtUvgI'
     
-    useEffect(() => {
-        Axios(config)
-        .then(function (response) {
-            console.log(response);
-            setMongo(response.data.document.name)
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-    }, [])
+    const supabase = createClient(supabaseUrl, supabaseKey)
+    useEffect(() =>{
+        const fetchData = async() =>{
+            try{
+                let { data: result, error } = await supabase
+                .from('character')
+                .select('*')
+                .eq('char_id', '1')
+
+                setSupbase(result)
+            }
+            catch(error){
+              console.log(error)
+            }
+        }
+        fetchData()
+    },[])
+
     return (
         <>
             <Typography
@@ -45,12 +34,7 @@ function Main() {
             >
                 Text-RPG!
             </Typography>
-            <Typography
-                align='center'
-                variant='subtitle1'
-            >
-                {mongo}
-            </Typography>
+            {console.log(supbase)}
         </>
     )
 }
